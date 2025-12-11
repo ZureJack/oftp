@@ -24,9 +24,15 @@ foreach(test_file ${TEST_FILES})
     string(REGEX REPLACE "^[Tt]est" "" ctest_name ${test_name})
     
     add_executable(${target_test_filename} ${filename})
-    target_link_libraries(${target_test_filename} PRIVATE GTest::gtest_main build_type_selector)
+    target_link_libraries(${target_test_filename} PRIVATE GTest::gtest build_type_selector)
     message(STATUS "build_type_selector: ${build_type_selector}")
-    add_test(NAME ${ctest_name} COMMAND ${target_test_filename})
+#    add_test(NAME ${ctest_name} COMMAND ${target_test_filename})
+    add_test(NAME ${ctest_name}
+        COMMAND ${CMAKE_COMMAND} -E env
+            GCOV_PREFIX=${CMAKE_BINARY_DIR}/test/coverage
+            GCOV_PREFIX_STRIP=999
+            $<TARGET_FILE:${target_test_filename}>
+    )
 
     # message(STATUS "原始文件: ${filename}")
     # message(STATUS "去除扩展名: ${target_test_filename}")
