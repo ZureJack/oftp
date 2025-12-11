@@ -24,7 +24,7 @@ foreach(test_file ${TEST_FILES})
     string(REGEX REPLACE "^[Tt]est" "" ctest_name ${test_name})
     
     add_executable(${target_test_filename} ${filename})
-    target_link_libraries(${target_test_filename} PRIVATE GTest::gtest_main compile_options)
+    target_link_libraries(${target_test_filename} PRIVATE GTest::gtest_main build_type_selector)
     message(STATUS "build_type_selector: ${build_type_selector}")
     add_test(NAME ${ctest_name} COMMAND ${target_test_filename})
 

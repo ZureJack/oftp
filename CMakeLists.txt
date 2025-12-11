@@ -48,8 +48,6 @@ add_custom_target(ftp_version
 )
 
 include(${PROJECT_SOURCE_DIR}/cmake/build_type_selector.cmake)
-print_interface_library_config(compile_options_test)
-print_interface_library_config(compile_options)
 add_subdirectory(src)
 add_subdirectory(tools)
 

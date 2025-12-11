@@ -27,11 +27,11 @@ target_compile_options(compile_options_debug INTERFACE
     -ggdb
     -DDEBUG_BUILD
     # Sanitizers（错误检测）
-    -fsanitize=address     # 地址检查器
-    -fsanitize=undefined   # 未定义行为检查器
-    -fsanitize=leak        # 内存泄漏检查器
-    -fsanitize=bounds      # 数组边界检查
-    -fsanitize=null        # 空指针检查
+    # -fsanitize=address     # 地址检查器
+    # -fsanitize=undefined   # 未定义行为检查器
+    # -fsanitize=leak        # 内存泄漏检查器
+    # -fsanitize=bounds      # 数组边界检查
+    # -fsanitize=null        # 空指针检查
     
     # 调试辅助
     -fno-omit-frame-pointer   # 保留帧指针
@@ -57,57 +57,20 @@ target_compile_options(compile_options_test INTERFACE
 )
 
 add_library(build_type_selector INTERFACE)
-
-if(Test)
-    set(build_type_selector "Test" compile_options_test)
-elseif(Debug)
-    set(build_type_selector "Debug" compile_options_debug)
-else
-    set(build_type_selector "Release" compile_options_release)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    target_link_libraries(build_type_selector INTERFACE compile_options_debug)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
+    target_link_libraries(build_type_selector INTERFACE compile_options_release)
+elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
+    if(BUILD_TESTING)
+        target_link_libraries(build_type_selector INTERFACE compile_options_test)
+    else()
+        message(STATUS "Please run 'cmake .. -DBUILD_TESTING=ON'")
+    endif()
+else()
+    # 默认使用 Debug
+    target_link_libraries(build_type_selector INTERFACE compile_options_debug)
 endif()
 
-
-
-# 在 CMakeLists.txt 中添加
-function(print_interface_library_config lib_name)
-    message(STATUS "=== Configuration for ${lib_name} ===")
-    
-    # 获取所有属性
-    get_target_property(prop_names ${lib_name} INTERFACE_PROPERTIES)
-    if(prop_names)
-        message(STATUS "Interface properties: ${prop_names}")
-    endif()
-    
-    # 获取编译选项
-    get_target_property(compile_opts ${lib_name} INTERFACE_COMPILE_OPTIONS)
-    if(compile_opts)
-        message(STATUS "Compile options: ${compile_opts}")
-    endif()
-    
-    # 获取编译定义
-    get_target_property(compile_defs ${lib_name} INTERFACE_COMPILE_DEFINITIONS)
-    if(compile_defs)
-        message(STATUS "Compile definitions: ${compile_defs}")
-    endif()
-    
-    # 获取包含目录
-    get_target_property(include_dirs ${lib_name} INTERFACE_INCLUDE_DIRECTORIES)
-    if(include_dirs)
-        message(STATUS "Include directories: ${include_dirs}")
-    endif()
-    
-    # 获取链接选项
-    get_target_property(link_opts ${lib_name} INTERFACE_LINK_OPTIONS)
-    if(link_opts)
-        message(STATUS "Link options: ${link_opts}")
-    endif()
-    
-    # 获取链接库
-    get_target_property(link_libs ${lib_name} INTERFACE_LINK_LIBRARIES)
-    if(link_libs)
-        message(STATUS "Link libraries: ${link_libs}")
-    endif()
-    
-    message(STATUS "")
-endfunction()
+message(STATUS "Selected compile options: ${SELECTED_COMPILE_OPTIONS}")
 
