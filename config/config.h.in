@@ -1,4 +1,6 @@
 #ifndef O_CONFIG_H
 #define O_CONFIG_H
 #define OFTP_MAX_NAME 32
+#define OFTP_MAX_PATH 256
+#define OFTP_BUF_LEN 4096
 #endif

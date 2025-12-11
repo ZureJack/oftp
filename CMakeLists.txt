@@ -48,6 +48,7 @@ add_custom_target(ftp_version
 )
 
 include(${PROJECT_SOURCE_DIR}/cmake/build_type_selector.cmake)
+include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR})
 add_subdirectory(src)
 add_subdirectory(tools)
 

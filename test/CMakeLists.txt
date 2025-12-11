@@ -8,10 +8,11 @@
 #                     )
 # set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 # FetchContent_MakeAvailable(googletest)
-include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR})
+# include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR})
 find_package(GTest REQUIRED)
 include_directories(${GTEST_INCLUDE_DIRS})
 file(GLOB TEST_FILES "${CMAKE_CURRENT_SOURCE_DIR}/test*.cpp")
+set(testlib olog omem)
 foreach(test_file ${TEST_FILES})
     # 获取文件名（不含路径）
     get_filename_component(filename ${test_file} NAME)
@@ -24,7 +25,9 @@ foreach(test_file ${TEST_FILES})
     string(REGEX REPLACE "^[Tt]est" "" ctest_name ${test_name})
     
     add_executable(${target_test_filename} ${filename})
-    target_link_libraries(${target_test_filename} PRIVATE GTest::gtest build_type_selector)
+    target_link_libraries(${target_test_filename} PRIVATE GTest::gtest build_type_selector
+                            ${testlib}
+    )
     message(STATUS "build_type_selector: ${build_type_selector}")
 #    add_test(NAME ${ctest_name} COMMAND ${target_test_filename})
     add_test(NAME ${ctest_name}

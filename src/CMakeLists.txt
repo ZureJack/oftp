@@ -12,7 +12,7 @@ endif()
 add_definitions(-DFTP_VERSION="${FTP_VERSION_FULL}")
 
 
-include_directories(../include "${PROJECT_BINARY_DIR}")
+# include_directories(${PROJECT_SOURCE_DIR}/include ${PROJECT_BINARY_DIR})
 add_subdirectory(lib)
 add_subdirectory(sys)
 add_subdirectory(client)
