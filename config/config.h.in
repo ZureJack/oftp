@@ -1,4 +1,4 @@
 #ifndef O_CONFIG_H
 #define O_CONFIG_H
-#cmakedefine BUILD_TESTING "@BUILD_TESTING@"
+#define OFTP_MAX_NAME 32
 #endif
