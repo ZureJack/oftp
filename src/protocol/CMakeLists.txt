@@ -1,0 +1,18 @@
+add_library(protocol STATIC
+    ftp.cpp
+)
+
+target_link_libraries(protocol build_type_selector)
+set_target_properties(protocol PROPERTIES
+    ARCHIVE_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/lib/debug"
+    LIBRARY_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/lib/debug"
+    RUNTIME_OUTPUT_DIRECTORY_DEBUG "${CMAKE_BINARY_DIR}/bin/debug"
+    
+    ARCHIVE_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/lib/release"
+    LIBRARY_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/lib/release"
+    RUNTIME_OUTPUT_DIRECTORY_RELEASE "${CMAKE_BINARY_DIR}/bin/release"
+    
+    ARCHIVE_OUTPUT_DIRECTORY_TEST "${CMAKE_BINARY_DIR}/lib/test"
+    LIBRARY_OUTPUT_DIRECTORY_TEST "${CMAKE_BINARY_DIR}/lib/test"
+    RUNTIME_OUTPUT_DIRECTORY_TEST "${CMAKE_BINARY_DIR}/bin/test"
+)
