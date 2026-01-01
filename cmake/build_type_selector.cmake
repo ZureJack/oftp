@@ -48,9 +48,14 @@ target_compile_options(compile_options_test INTERFACE
     -Wall
     -Wextra
     -Wpedantic
-    -O2
+    -O0
     -g
     -DTEST_BUILD
+    -fprofile-arcs
+    -ftest-coverage
+    --coverage
+)
+target_link_options(compile_options_test INTERFACE 
     -fprofile-arcs
     -ftest-coverage
     --coverage
@@ -62,11 +67,7 @@ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
 elseif(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_link_libraries(build_type_selector INTERFACE compile_options_release)
 elseif(CMAKE_BUILD_TYPE STREQUAL "Test")
-    if(BUILD_TESTING)
-        target_link_libraries(build_type_selector INTERFACE compile_options_test)
-    else()
-        message(STATUS "Please run 'cmake .. -DBUILD_TESTING=ON'")
-    endif()
+    target_link_libraries(build_type_selector INTERFACE compile_options_test)
 else()
     # 默认使用 Debug
     target_link_libraries(build_type_selector INTERFACE compile_options_debug)
